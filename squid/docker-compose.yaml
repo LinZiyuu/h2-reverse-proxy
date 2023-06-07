@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+  reverse-proxy:
+    build: .
+    ports:
+      - 85:3128
+    volumes:
+      - ./squid.conf:/etc/squid/squid.conf
+    depends_on:
+      - origin
+
+  origin:
+    image: python
+    entrypoint: bash -c "mkdir /app && cd /app && echo 'Origin works!' > index.html && python -m http.server 80"
